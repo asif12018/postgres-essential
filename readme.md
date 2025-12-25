@@ -104,6 +104,63 @@ LIMIT 5 OFFSET 5 * 1;
 
 ### Reason to Use `LIMIT` & `OFFSET`
 
+
+
+### Using `UPDATE` in PostgreSQL
+
+**Purpose**
+The `UPDATE` statement is used to modify existing records in a table based on a condition.
+
+---
+
+### View Data (Before Update)
+
+```sql
+SELECT *
+FROM students;
+```
+
+---
+
+### Update Query
+
+```sql
+UPDATE students
+SET grade = 'B'
+WHERE student_id IN (1, 2);
+```
+
+---
+
+### Sample Data (Before)
+
+| student_id | first_name | grade |
+| ---------- | ---------- | ----- |
+| 1          | Asif       | A     |
+| 2          | Rahim      | C     |
+| 3          | Karim      | B     |
+
+---
+
+### Output (After Update)
+
+| student_id | first_name | grade |
+| ---------- | ---------- | ----- |
+| 1          | Asif       | B     |
+| 2          | Rahim      | B     |
+| 3          | Karim      | B     |
+
+---
+
+### Reason to Use `UPDATE`
+
+* Modify specific rows without affecting the entire table
+* Apply changes based on conditions (`WHERE` clause)
+* Commonly used for correcting or updating user data
+
+> **Important:** Always use a `WHERE` clause with `UPDATE` to avoid updating all rows unintentionally.
+
+
 * Implements pagination in APIs and dashboards
 * Reduces data load by fetching small chunks
 * Improves performance and user experience
