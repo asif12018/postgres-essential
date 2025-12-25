@@ -166,3 +166,65 @@ WHERE student_id IN (1, 2);
 * Improves performance and user experience
 
 This pattern is standard for page-based data retrieval in SQL-backed applications.
+
+
+### Using `GROUP BY` in PostgreSQL
+
+**Purpose**
+`GROUP BY` is used to group rows that share the same values in one or more columns, typically with aggregate functions.
+
+---
+
+### Aggregate Data by Country
+
+```sql
+SELECT 
+  country,
+  AVG(age) AS avg_age,
+  MIN(age) AS min_age
+FROM students
+GROUP BY country;
+```
+
+---
+
+### Sample Output
+
+| country    | avg_age | min_age |
+| ---------- | ------- | ------- |
+| Bangladesh | 21.8    | 20      |
+| India      | 22.5    | 21      |
+| Nepal      | 23.0    | 22      |
+
+---
+
+### Count Students by Country
+
+```sql
+SELECT 
+  country,
+  COUNT(*) AS total_students
+FROM students
+GROUP BY country;
+```
+
+---
+
+### Sample Output
+
+| country    | total_students |
+| ---------- | -------------- |
+| Bangladesh | 12             |
+| India      | 8              |
+| Nepal      | 5              |
+
+---
+
+### Reason to Use `GROUP BY`
+
+* Summarizes large datasets into meaningful statistics
+* Works with aggregate functions (`COUNT`, `AVG`, `MIN`, `MAX`, `SUM`)
+* Commonly used in reports, dashboards, and analytics queries
+
+`GROUP BY` is essential when you need insights rather than raw row-level data.
+
