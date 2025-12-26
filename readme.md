@@ -414,5 +414,60 @@ LEFT JOIN users AS u
 Rows from `posts` are always returned, even if no matching user exists.
 
 
+### Understanding `RIGHT JOIN` in PostgreSQL
+
+**Purpose**
+`RIGHT JOIN` returns **all rows from the right table** and the matching rows from the left table. If there is no match, the result contains `NULL` values for the left table columns.
+
+---
+
+### Query Example
+
+```sql
+SELECT *
+FROM posts AS p
+RIGHT JOIN users AS u
+  ON p.user_id = u.id;
+```
+
+---
+
+### Example Tables
+
+**posts**
+
+| id | title       | user_id |
+| -- | ----------- | ------- |
+| 1  | SQL Basics  | 1       |
+| 2  | Joins Intro | 2       |
+| 3  | Indexing    | 5       |
+
+**users**
+
+| id | username |
+| -- | -------- |
+| 1  | asif     |
+| 2  | rahim    |
+| 3  | karim    |
+
+---
+
+### Output
+
+| post_id | title       | user_id | id (user) | username |
+| ------- | ----------- | ------- | --------- | -------- |
+| 1       | SQL Basics  | 1       | 1         | asif     |
+| 2       | Joins Intro | 2       | 2         | rahim    |
+| NULL    | NULL        | NULL    | 3         | karim    |
+
+---
+
+### Reason to Use `RIGHT JOIN`
+
+* Keeps all records from the right table
+* Highlights users without any related posts
+* Helpful when the right table is the primary focus
+
+> **Note:** In practice, `RIGHT JOIN` can often be rewritten as a `LEFT JOIN` by swapping table order for better readability.
 
 
