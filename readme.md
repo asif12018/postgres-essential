@@ -638,13 +638,56 @@ ON e.dept_id = d.dept_id;
 
 ---
 
-If you want, I can also provide:
 
-* `LEFT JOIN` vs `INNER JOIN` comparison
-* Same example with **NULL dept_id**
-* PostgreSQL interview-style notes
 
-Just tell me.
+### Understanding Subqueries in PostgreSQL
+
+**Purpose**
+A subquery is a query nested inside another query. It is used to compute a value that the outer query depends on.
+
+---
+
+### Query Example
+
+```sql
+SELECT name
+FROM employees
+WHERE department = 'Engineering'
+  AND salary = (
+    SELECT MAX(salary)
+    FROM employees
+    WHERE department = 'Engineering'
+  );
+```
+
+---
+
+### Example Table: `employees`
+
+| name  | department  | salary |
+| ----- | ----------- | ------ |
+| Asif  | Engineering | 90000  |
+| Rahim | Engineering | 120000 |
+| Karim | HR          | 80000  |
+
+---
+
+### Output
+
+| name  |
+| ----- |
+| Rahim |
+
+---
+
+### Reason to Use Subqueries
+
+* Allows querying based on aggregated or derived values
+* Keeps complex logic inside the database
+* Improves clarity when filtering using computed results
+
+In this example, the subquery finds the **highest salary in the Engineering department**, and the outer query returns the employee(s) who earn that salary.
+
 
 
 
