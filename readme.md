@@ -691,4 +691,77 @@ In this example, the subquery finds the **highest salary in the Engineering depa
 
 
 
+### Creating Functions in PostgreSQL
+
+**Purpose**
+Functions encapsulate reusable SQL logic that can be executed like built-in functions.
+
+---
+
+### Function 1: Count Total Employees
+
+```sql
+CREATE FUNCTION emp_count()
+RETURNS INT
+LANGUAGE SQL
+AS
+$$
+  SELECT COUNT(*) FROM employees;
+$$;
+```
+
+#### Call the Function
+
+```sql
+SELECT emp_count();
+```
+
+#### Output
+
+| emp_count |
+| --------- |
+| 15        |
+
+---
+
+### Function 2: Delete Employee by ID
+
+```sql
+CREATE FUNCTION delete_emp_id(emp_id INT)
+RETURNS VOID
+LANGUAGE SQL
+AS
+$$
+  DELETE FROM employees
+  WHERE id = emp_id;
+$$;
+```
+
+#### Call the Function
+
+```sql
+SELECT delete_emp_id(1);
+```
+
+#### Output
+
+| delete_emp_id |
+| ------------- |
+| (null)        |
+
+---
+
+### Reason to Use Functions
+
+* Reuse database logic across queries
+* Reduce repetitive SQL code
+* Improve maintainability and consistency
+* Execute complex operations with a single call
+
+Functions are especially useful for enforcing business logic directly at the database level.
+
+
+
+
+
 
