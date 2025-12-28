@@ -762,6 +762,82 @@ Functions are especially useful for enforcing business logic directly at the dat
 
 
 
+### Understanding Procedures in PostgreSQL
+
+**Purpose**
+A **procedure** executes a set of SQL statements and is invoked using `CALL`. Unlike functions, procedures do not return a value and are commonly used for data modification and transactional logic.
+
+---
+
+### Procedure 1: Delete Employee by ID
+
+```sql
+CREATE PROCEDURE delete_emp_by_id(emp_id INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  DELETE FROM employees
+  WHERE id = emp_id;
+END;
+$$;
+```
+
+#### Call the Procedure
+
+```sql
+CALL delete_emp_by_id(2);
+```
+
+#### Result
+
+* Employee with `id = 2` is removed from the `employees` table.
+
+---
+
+### Procedure 2: Increase Salary Below Department Average
+
+```sql
+CREATE PROCEDURE increase_low_salary(department_name VARCHAR(50))
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  avg_salary INT;
+BEGIN
+  -- Step 1: calculate average salary of the department
+  SELECT AVG(salary)
+  INTO avg_salary
+  FROM employees
+  WHERE department = department_name;
+
+  -- Step 2: increase salary by 10% if below average
+  UPDATE employees
+  SET salary = salary * 1.1
+  WHERE department = department_name
+    AND salary < avg_salary;
+END;
+$$;
+```
+
+#### Call the Procedure
+
+```sql
+CALL increase_low_salary('HR');
+```
+
+---
+
+### Reason to Use Procedures
+
+* Execute multiple SQL statements as a single operation
+* Ideal for complex business logic and bulk updates
+* Support transactional control (`BEGIN`, `COMMIT`, `ROLLBACK`)
+* Improve database-side processing and performance
+
+Procedures are best suited for operations that change data and do not need to return a value.
+
+
+
+
 
 
 
