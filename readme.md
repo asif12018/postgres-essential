@@ -836,6 +836,84 @@ CALL increase_low_salary('HR');
 Procedures are best suited for operations that change data and do not need to return a value.
 
 
+### Understanding Triggers in PostgreSQL
+
+**Purpose**
+A **trigger** automatically executes logic when a specific database event (INSERT, UPDATE, DELETE) occurs on a table.
+
+---
+
+### Step 1: Function to Delete an Employee
+
+```sql
+CREATE FUNCTION delete_emp_id(emp_id INT)
+RETURNS VOID
+LANGUAGE SQL
+AS $$
+  DELETE FROM employees WHERE id = emp_id;
+$$;
+```
+
+---
+
+### Step 2: Trigger Function (Executed Automatically)
+
+```sql
+CREATE FUNCTION log_employee_deletion()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  INSERT INTO employee_logs (emp_name, action)
+  VALUES (OLD.name, 'delete');
+
+  RETURN OLD;
+END;
+$$;
+```
+
+---
+
+### Step 3: Create Trigger
+
+```sql
+CREATE TRIGGER save_employee_delete_logs
+AFTER DELETE ON employees
+FOR EACH ROW
+EXECUTE FUNCTION log_employee_deletion();
+```
+
+---
+
+### Execute
+
+```sql
+SELECT delete_emp_id(5);
+```
+
+---
+
+### Result
+
+* Employee with `id = 5` is deleted from `employees`
+* A log entry is automatically inserted into `employee_logs`
+
+**employee_logs**
+
+| emp_name | action |
+| -------- | ------ |
+| Rahim    | delete |
+
+---
+
+### Reason to Use Triggers
+
+* Automatically enforce audit logging
+* Ensure consistency without manual intervention
+* Capture historical actions (delete, update, insert)
+* Centralize business rules at the database level
+
+Triggers are ideal when an action must always occur in response to a data change.
 
 
 
